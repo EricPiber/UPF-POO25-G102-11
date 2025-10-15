@@ -1,5 +1,3 @@
-package Lab1;
-
 public class Record {
     // attributes
     private Vector input;
