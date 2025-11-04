@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Dataset {
     // attributes
-    protected  int dim;
+    protected int dim;
     protected ArrayList<Record> data;
 
     // constructor
@@ -44,7 +44,7 @@ public class Dataset {
             Vector v_i = data.get(i).getInput();
             double sum_inputs = 0;
             for (int j = 0; j < v_i.getDim(); j++) {
-                sum_inputs += Math.pow((v_i.getElem(j) / mean), 2);
+                sum_inputs += Math.pow((v_i.getElem(j) - mean), 2);
             }
             std_inputs[i] = sum_inputs/v_i.getDim();
         }
