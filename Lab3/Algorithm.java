@@ -14,7 +14,7 @@ public class Algorithm {
     // methods
     public Vector gradient(Dataset ds, Model m) {
         // getting values needed for computing gradient
-        int n = ds.getDim();
+        int n = ds.getData().size();
         Vector params = m.getParams();
         Vector gradient = new Vector(params.getDim(), 0);   // initialized with all 0s
         ArrayList<Record> data = ds.getData();
@@ -34,7 +34,7 @@ public class Algorithm {
     }
 
     public Model solve(Dataset ds) {
-        Model m = new Model(ds.getData().get(0).getInput().getDim() + 1);   // initializing model
+        Model m = new Model(ds.getDim() + 1);               // initializing model
         double gradient_norm = stopping_criterion + 1;      // assuring it enters while loop
 
         while (gradient_norm >= stopping_criterion) {       // until gradient norm is smaller than stopping criterion

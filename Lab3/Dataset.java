@@ -8,7 +8,7 @@ public class Dataset {
     // constructor
     public Dataset(int dim) {
         this.dim = dim;
-        this.data = new ArrayList<>();
+        data = new ArrayList<>();
     }
 
     // getter methods
@@ -28,9 +28,12 @@ public class Dataset {
     public Vector meanInput() {
         double[] means = new double[dim];
         for (int i = 0; i < dim; i++) {
-            Vector v_i = data.get(i).getInput();
-            Vector v = new Vector(v_i.getDim(), 1);
-            means[i] = (v_i.dotProduct(v))/v_i.getDim();
+            double aux = 0;
+            for (int j = 0; j < data.size(); j++) {
+                aux += data.get(j).getInput().getElem(i);
+            }
+            aux /= data.size();
+            means[i] = aux;
         }
         Vector mean_of_inputs = new Vector(means);
         return mean_of_inputs;
@@ -40,13 +43,12 @@ public class Dataset {
         double[] std_inputs = new double[dim];
         Vector means = this.meanInput();
         for (int i = 0; i < dim; i++) {
-            double mean = means.getElem(i);
-            Vector v_i = data.get(i).getInput();
-            double sum_inputs = 0;
-            for (int j = 0; j < v_i.getDim(); j++) {
-                sum_inputs += Math.pow((v_i.getElem(j) - mean), 2);
+            double aux = 0;
+            for (int j = 0; j < data.size(); j++) {
+                aux += Math.pow(data.get(j).getInput().getElem(i) - means.getElem(i),2);
             }
-            std_inputs[i] = sum_inputs/v_i.getDim();
+            aux /= data.size();
+            std_inputs[i] = aux;
         }
         Vector v_std_inputs = new Vector(std_inputs);
         return v_std_inputs.sqrt();
@@ -54,20 +56,20 @@ public class Dataset {
 
     public double meanOutput() {
         double mean_of_outputs = 0;
-        for (int i = 0; i < dim; i++) {
+        for (int i = 0; i < data.size(); i++) {
             mean_of_outputs += data.get(i).getOutput();
         }
-        mean_of_outputs /= dim;
+        mean_of_outputs /= data.size();
         return mean_of_outputs;
     }
 
     public double stdOutput() {
         double mean_output = this.meanOutput();
         double sum_squares = 0;
-        for (int i = 0; i < this.dim; i++) {
-            sum_squares += Math.pow(this.data.get(i).getOutput() - mean_output, 2);
+        for (int i = 0; i < data.size(); i++) {
+            sum_squares += Math.pow(data.get(i).getOutput() - mean_output, 2);
         }
-        return Math.sqrt(sum_squares / this.dim);
+        return Math.sqrt(sum_squares / data.size());
     }
 
     public StandardizedDataset standardize() {
@@ -76,8 +78,8 @@ public class Dataset {
         double mo = this.meanOutput();
         double so = this.stdOutput();
         StandardizedDataset stddtst = new StandardizedDataset(dim, mi, si, mo, so);
-        for (int i = 0; i < dim; i++) {
-            Record r = stddtst.transform(data.get(i), i);
+        for (int i = 0; i < data.size(); i++) {
+            Record r = stddtst.transform(data.get(i));
             stddtst.addRecord(r);
         }
         return stddtst;

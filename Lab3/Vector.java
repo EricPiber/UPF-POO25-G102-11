@@ -115,4 +115,9 @@ public class Vector {
         Vector vector_augmented = new Vector(elems_augmented);      // from array to Vector
         return vector_augmented;
     }
+
+    public Vector copy() {
+        Vector copy = new Vector(elems);
+        return copy;
+    }
 }

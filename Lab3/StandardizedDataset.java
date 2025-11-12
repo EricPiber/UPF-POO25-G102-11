@@ -15,15 +15,11 @@ public class StandardizedDataset extends Dataset {
     }
 
     // additional methods
-    public Record transform(Record r, int idx) {
-        Vector old_input = r.getInput();
-        double[] new_input = new double[old_input.getDim()];
-        for (int i = 0; i < old_input.getDim(); i++) {
-            new_input[i] = ((old_input.getElem(i) - mi.getElem(idx)) / si.getElem(idx));
-        }
-        Vector v_input = new Vector(new_input);
-        double output = ((r.getOutput() - mo) / so);
-        Record res = new Record(v_input, output);
-        return res;
+    public Record transform(Record r) {
+        Vector trans_x = r.getInput().copy();
+        trans_x.subtract(mi).divide(si);
+        double trans_y = (r.getOutput() - mo) / so;
+        Record trans_r = new Record(trans_x, trans_y);
+        return trans_r;
     }
 }
