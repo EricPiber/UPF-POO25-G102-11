@@ -20,11 +20,12 @@ public class Dataset {
         return data;
     }
 
-    // methods
+    // setter methods
     public void addRecord(Record r) {
         data.add(r);
     }
 
+    // methods
     public Vector meanInput() {
         double[] means = new double[dim];
         for (int i = 0; i < dim; i++) {

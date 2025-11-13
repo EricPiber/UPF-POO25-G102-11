@@ -10,13 +10,14 @@ public class SupervisedLearner {
         dataset = d;
     }
 
+    // methods
     public void solve() {
         model = algorithm.solve(dataset);
     }
 
     public double predict(Vector v) {
-        Vector v_augmented = v.augment();                   // augmenting input vector
-        return model.getParams().dotProduct(v_augmented);   // output given by the dot product
+        Vector v_augmented = v.augment();       // augmenting input vector
+        return model.predict(v_augmented);      // output given by the dot product
     }
 
     @Override

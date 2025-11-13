@@ -117,7 +117,6 @@ public class Vector {
     }
 
     public Vector copy() {
-        Vector copy = new Vector(elems);
-        return copy;
+        return new Vector(Arrays.copyOf(elems, elems.length));
     }
 }

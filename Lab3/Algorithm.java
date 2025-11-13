@@ -15,8 +15,7 @@ public class Algorithm {
     public Vector gradient(Dataset ds, Model m) {
         // getting values needed for computing gradient
         int n = ds.getData().size();
-        Vector params = m.getParams();
-        Vector gradient = new Vector(params.getDim(), 0);   // initialized with all 0s
+        Vector grad = new Vector(m.getParams().getDim(), 0);   // initialized with all 0s
         ArrayList<Record> data = ds.getData();
 
         for(int i=0; i < n; i++) {
@@ -24,13 +23,13 @@ public class Algorithm {
             Vector xi = data.get(i).getInput().augment();
             double yi = data.get(i).getOutput();
 
-            double aux = params.dotProduct(xi);
+            double aux = m.predict(xi);
             aux -= yi;
-            gradient.add(xi.multiply(aux));
+            grad.add(xi.copy().multiply(aux));
         }
-        gradient.multiply(1/n);
-
-        return gradient;
+        grad.multiply(1.0/n);
+        
+        return grad;
     }
 
     public Model solve(Dataset ds) {
