@@ -17,7 +17,7 @@ public class SupervisedLearner {
 
     public double predict(Vector v) {
         if(dataset instanceof StandardizedDataset) {
-            Vector trans_v = dataset.transform(v);          // transforming, so the vector addapts to the standarized dataset
+            Vector trans_v = dataset.transform(v);          // transforming, so the vector adapts to the standardized dataset
             Vector trans_v_augmented = trans_v.augment();   // augmenting, for the prediction
             double y = model.predict(trans_v_augmented);    // predicting
             return dataset.output(y);                       // translating the result back and returning it

@@ -22,7 +22,7 @@ public class TestLearner {
         Record r3 = new Record(w, output_c);
         Record r4 = new Record(x, output_d);
         Record r5 = new Record(y, output_e);
-        Dataset dtst = new Dataset(4);
+        Dataset dtst = new RawDataset(4);
         dtst.addRecord(r1);
         dtst.addRecord(r2);
         dtst.addRecord(r3);
@@ -62,18 +62,34 @@ public class TestLearner {
         double sc = 0.000001;       // stopping criterion
 
         // testing constructors
-        Algorithm algorithm = new Algorithm(lr, sc);
-        SupervisedLearner sl = new SupervisedLearner(algorithm, dtst);
+        GradientDescent grad_desc = new GradientDescent(lr, sc);
+        StochasticGradientDescent s_grad_desc = new StochasticGradientDescent(lr, 5, 1000000);
+        SupervisedLearner sl1 = new SupervisedLearner(grad_desc, dtst);
+        SupervisedLearner sl2 = new SupervisedLearner(s_grad_desc, dtst);
+        StandardizedDataset stddtst = ((RawDataset) dtst).standardize();
+        SupervisedLearner sl3 = new SupervisedLearner(grad_desc, stddtst);
 
         // TESTING METHODS
-        sl.solve();
+        sl1.solve();
         Vector testInput = new Vector(new double[]{1, 1, 1, 1});
-        double prediction = sl.predict(testInput);
+        double prediction1 = sl1.predict(testInput);
+
+        sl2.solve();
+        double prediction2 = sl2.predict(testInput);
+
+        sl3.solve();
+        double prediction3 = sl3.predict(testInput);
 
         // checking correctness
 
-        System.out.println("Learned model parameters (theta): " + sl);
-        System.out.println("Prediction for (1, 1, 1, 1): " + prediction);
+        System.out.println("Learned model parameters (theta): " + sl1);
+        System.out.println("Prediction for (1, 1, 1, 1): " + prediction1);
+        System.out.println("Expected: 2");
+        System.out.println("Learned model parameters (theta): " + sl2);
+        System.out.println("Prediction for (1, 1, 1, 1): " + prediction2);
+        System.out.println("Expected: 2");
+        System.out.println("Learned model parameters (theta): " + sl3);
+        System.out.println("Prediction for (1, 1, 1, 1): " + prediction3);
         System.out.println("Expected: 2");
     }
 }

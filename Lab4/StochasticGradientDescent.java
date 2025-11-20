@@ -41,7 +41,7 @@ public class StochasticGradientDescent extends Algorithm {
     public Model solve(Dataset ds) {
         Model m = new Model(ds.getDim() + 1);               // initializing model
 
-        for(int i=0; i<iterations; i++) {       // until gradient norm is smaller than stopping criterion
+        for(int i=0; i<iterations; i++) {       // until we get to the specified number of iterations
             Vector gradient = stochasticGradient(ds, m);
             m.update(gradient, learning_rate);
         }
