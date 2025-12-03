@@ -15,6 +15,10 @@ public:
     Model( int dim )
       : params( dim, 1 ) {
     }
+
+    Vector getParams() {
+        return params;
+    }
     
     double predict( const Vector & input ) const {
         return input.dotProduct( params );

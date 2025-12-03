@@ -35,7 +35,6 @@ public:
             os << ", " << ds.data[i];
         return os << "]";
     }
-    
 };
 
 #endif

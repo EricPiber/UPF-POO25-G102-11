@@ -1,6 +1,5 @@
 
-#include "Dataset.h"
-#include "Model.h"
+#include "SupervisedLearner.h"
 
 int main() {
 
@@ -23,5 +22,6 @@ int main() {
     
     std::cout << d1 << " " << d2 << "\n";
     
+    return 0;
 }
 

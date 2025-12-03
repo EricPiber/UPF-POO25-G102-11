@@ -2,7 +2,8 @@
 #ifndef __VECTOR__
 #define __VECTOR__
 
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>        // gcc
+#include "bits/stdc++.h"        // clang
 
 class Vector {
 
@@ -64,7 +65,7 @@ public:
     Vector do_sqrt() const {
         std::vector<double> out( elems.begin(), elems.end() );
         for ( int i = 0; i < getDim(); ++i )
-            out[i] += sqrt( out[i] );
+            out[i] = sqrt( out[i] );
         return Vector( out );
     }
     
@@ -83,6 +84,12 @@ public:
         std::vector<double> out( elems.begin(), elems.end() );
         out.push_back( 1 );
         return Vector( out );
+    }
+
+    Vector copy() const {
+        std::vector<double> c(elems.begin(), elems.end());
+        Vector v(c);
+        return v;
     }
     
     friend std::ostream & operator<<( std::ostream & os, Vector & v ) {
