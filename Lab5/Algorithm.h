@@ -12,7 +12,7 @@ class Algorithm {
     public:
         Algorithm(double lr) : learningRate(lr) {}
 
-        virtual Model solve(Dataset ds)=0;
+        virtual Model solve(const Dataset& ds) = 0;
 };
 
 

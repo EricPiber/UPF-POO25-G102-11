@@ -16,9 +16,7 @@ public:
       : params( dim, 1 ) {
     }
 
-    Vector getParams() {
-        return params;
-    }
+    const Vector& getParams() const { return params; }
     
     double predict( const Vector & input ) const {
         return input.dotProduct( params );
@@ -29,7 +27,7 @@ public:
         params = params.subtract( delta.multiply( rate ) );
     }
     
-    friend std::ostream & operator<<( std::ostream & os, Model & m ) {
+    friend std::ostream & operator<<( std::ostream & os, const Model & m ) {
         return os << m.params;
     }
 

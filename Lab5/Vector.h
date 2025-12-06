@@ -92,9 +92,9 @@ public:
         return v;
     }
     
-    friend std::ostream & operator<<( std::ostream & os, Vector & v ) {
+    friend std::ostream & operator<<(std::ostream & os, const Vector & v) {
         os << "[" << v.elems[0];
-        for ( int i = 1; i < v.getDim(); ++i )
+        for (int i = 1; i < v.getDim(); ++i)
             os << "," << v.elems[i];
         return os << "]";
     }

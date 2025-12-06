@@ -21,9 +21,7 @@ public:
         return dim;
     }
     
-    std::vector<Record> getData() const {
-        return data;
-    }
+    const std::vector<Record>& getData() const { return data; }
     
     void addRecord( Record r ) {
         data.push_back(r);

@@ -13,35 +13,32 @@ class StochasticGradientDescent : public Algorithm {
         StochasticGradientDescent(double lr, int bs, int it) :
         Algorithm(lr), batchSize(bs), iterations(it) {}
 
-        Vector stochasticGradient(Dataset ds, Model m) {
-            std::vector<Record> data = ds.getData();
-            // getting values needed for computing stochastic gradient
+        Vector stochasticGradient(const Dataset& ds, const Model& m) {
+            const auto& data = ds.getData();
+
             std::vector<Record> batch;
-            std::sample(data.begin(), data.end(), std::back_inserter(batch), batchSize, std::mt19937{std::random_device{}()});
-            // now batch is a subset with batchSize records
+            std::sample(data.begin(), data.end(),
+                        std::back_inserter(batch),
+                        batchSize, std::mt19937{std::random_device{}()});
 
-            Vector grad(m.getParams().getDim(), 0);   // initialized with all 0s
+            Vector grad(m.getParams().getDim(), 0);
 
-            for(int i=0; i < batchSize; i++) {
-                // computting summatory
+            for (int i = 0; i < batchSize; ++i) {
                 Vector xi = batch[i].getInput().augment();
                 double yi = batch[i].getOutput();
+                double aux = m.predict(xi) - yi;
 
-                double aux = m.predict(xi);
-                aux -= yi;
-                grad.add(xi.copy().multiply(aux));
+                grad = grad.add(xi.copy().multiply(aux));  // <-- USE return value
             }
-            grad.multiply(1.0/batchSize);
-            
+            grad = grad.multiply(1.0 / batchSize);         // <-- USE return value
             return grad;
         }
 
-        Model solve(Dataset ds) override {
-            Model m(ds.getDim() + 1);               // initializing model
-
-            for(int i=0; i<iterations; i++) {       // until we get to the specified number of iterations
-                Vector gradient = stochasticGradient(ds, m);
-                m.update(gradient, learningRate);
+        Model solve(const Dataset& ds) override {
+            Model m(ds.getDim() + 1);
+            for (int i = 0; i < iterations; ++i) {
+                Vector grad = stochasticGradient(ds, m);
+                m.update(grad, learningRate);
             }
             return m;
         }
